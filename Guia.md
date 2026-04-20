@@ -17,11 +17,11 @@
 === crypto.py ===
 
 derivar_chave =  senha (str) + salt (bytes) → PBKDF2 (600k iterações) → chave de 32 bytes
-                 ⚠ mesmo senha + mesmo salt = mesma chave sempre
-                 ⚠ salt diferente = chave completamente diferente
+                  mesmo senha + mesmo salt = mesma chave sempre
+                  salt diferente = chave completamente diferente
 
 cifrar =  chave + dados (str) → gera IV aleatório (12 bytes) → AES-GCM → retorna (IV, ciphertext)
-          ⚠ IV nunca se repete — gerado com os.urandom(12) a cada chamada
+          IV nunca se repete — gerado com os.urandom(12) a cada chamada
 
 decifrar =  chave + IV + ciphertext → AES-GCM → dados originais (str)
             se alguém alterou o ciphertext → lança InvalidTag automaticamente 
@@ -82,7 +82,7 @@ cadastrar =  pede username + senha
              → (iv, totp_cifrado) = cifrar(chave, totp_secret)
              → salva {salt.hex(), iv.hex(), totp_cifrado.hex()} em users.json
              → exibe totp_secret UMA vez na tela para o usuário configurar no app
-             ⚠ totp_secret nunca é salvo em claro — só a versão cifrada
+              totp_secret nunca é salvo em claro — só a versão cifrada
 
 
 login =  pede username + senha + código TOTP
@@ -95,6 +95,6 @@ login =  pede username + senha + código TOTP
              se False → TOTP inválido → erro genérico
          → chave_sessao = os.urandom(32)
          → retorna (chave_sessao, username)
-         ⚠ chave_sessao não vai para arquivo — só retorna para o main.py guardar em RAM
-         ⚠ erro genérico em todos os casos = "usuário ou senha inválidos"
+          chave_sessao não vai para arquivo — só retorna para o main.py guardar em RAM
+          erro genérico em todos os casos = "usuário ou senha inválidos"
             (nunca dizer qual campo específico falhou — evita enumeração de usuários)
